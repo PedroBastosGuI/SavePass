@@ -20,6 +20,7 @@ import {
   TopGamesTitle
 } from './styles';
 import { UserFollowedStreamCard } from '../../components/UserFollowedStreamCard';
+import theme from '../../styles/theme';
 
 interface TopGames {
   box_art_url: string, 
@@ -49,6 +50,15 @@ export function Home() {
   
   const theme = useTheme();
   const { signOut, user, isLoggingOut } = useAuth();
+
+
+  async function handleSingOut(){
+    try{
+      await signOut();
+    }catch(error){
+      Alert.alert('error message' , 'Ocorreu um erro no App')
+    }
+  }
 
   // creates a function to handle sign out
     // try to call and wait signOut
@@ -121,11 +131,20 @@ export function Home() {
           <UserInfoText style={{ fontFamily: theme.fonts.bold }}>{user.display_name}</UserInfoText>
         </UserInfo>
 
-        {/* <SignOutButton onPress={}>
-          Verify if isLoggingOut is true
-          If it is, show an ActivityIndicator
-          Otherwise, show Feather's power icon
-        </SignOutButton> */}
+       <SignOutButton onPress={handleSingOut}>
+            {
+              isLoggingOut ? (<ActivityIndicator
+                size={25}
+                color={theme.colors.white}
+              />) : (
+                  <Feather
+                    name="power"
+                    size={24}
+                    color={theme.colors.white}
+                  />
+              )
+            }
+        </SignOutButton> 
       </Header>
 
       <UserFollowedStreams>
